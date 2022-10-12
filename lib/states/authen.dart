@@ -17,14 +17,57 @@ class _AuthenState extends State<Authen> {
   Widget build(BuildContext context) {
     double size = MediaQuery.of(context).size.width;
     return Scaffold(
-      body: ListView(
-        children: [
-          buildImage(size),
-          buildAppName(),
-          buildUser(size),
-          buildPassword(size),
-        ],
+      body: GestureDetector(
+        onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
+        behavior: HitTestBehavior.opaque,
+        child: ListView(
+          children: [
+            buildImage(size),
+            buildAppName(),
+            buildUser(size),
+            buildPassword(size),
+            buildLogin(size),
+            buildCreateAccount(),
+          ],
+        ),
       ),
+    );
+  }
+
+  Row buildCreateAccount() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        ShowTitle(
+          title: 'ไม่มีบัญชีผู้ใช้ ?',
+          textStyle: MyConstant().h3Style(),
+        ),
+        TextButton(
+          onPressed: () =>
+              Navigator.pushNamed(context, MyConstant.routeCreateAccount),
+          child: Text(
+            'สร้างบัญชีผู้ใช้',
+            style: TextStyle(color: MyConstant.red),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Row buildLogin(double size) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Container(
+          margin: EdgeInsets.symmetric(vertical: 16),
+          width: size * 0.6,
+          child: ElevatedButton(
+            style: MyConstant().myButtonStyle(),
+            onPressed: () {},
+            child: Text('เข้าสู่ระบบ'),
+          ),
+        ),
+      ],
     );
   }
 
