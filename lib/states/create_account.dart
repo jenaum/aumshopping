@@ -41,6 +41,130 @@ class _CreateAccountState extends State<CreateAccount> {
     );
   }
 
+  Row buildAdress(double size) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Container(
+          margin: EdgeInsets.only(top: 16),
+          width: size * 0.6,
+          child: TextFormField(
+            maxLines: 3,
+            decoration: InputDecoration(
+              hintText: 'กรุณากรอก ที่อยู่ ?',
+              hintStyle: MyConstant().h3Style(),
+              prefixIcon: Padding(
+                padding: const EdgeInsets.fromLTRB(0, 0, 0, 40),
+                child: Icon(
+                  Icons.home_outlined,
+                  color: MyConstant.dark,
+                ),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: MyConstant.dark),
+                borderRadius: BorderRadius.circular(30),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: MyConstant.light),
+                borderRadius: BorderRadius.circular(30),
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Row buildPhone(double size) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Container(
+          margin: EdgeInsets.only(top: 16),
+          width: size * 0.6,
+          child: TextFormField(
+            decoration: InputDecoration(
+              labelText: 'กรุณากรอก เบอร์โทรศัทพ์ ?',
+              labelStyle: MyConstant().h3Style(),
+              prefixIcon: Icon(
+                Icons.phone_outlined,
+                color: MyConstant.dark,
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: MyConstant.dark),
+                borderRadius: BorderRadius.circular(30),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: MyConstant.light),
+                borderRadius: BorderRadius.circular(30),
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Row buildUser(double size) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Container(
+          margin: EdgeInsets.only(top: 16),
+          width: size * 0.6,
+          child: TextFormField(
+            decoration: InputDecoration(
+              labelText: 'ชื่อบัญชีผู้เข้าใช้ (User) ?',
+              labelStyle: MyConstant().h3Style(),
+              prefixIcon: Icon(
+                Icons.person_add,
+                color: MyConstant.dark,
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: MyConstant.dark),
+                borderRadius: BorderRadius.circular(30),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: MyConstant.light),
+                borderRadius: BorderRadius.circular(30),
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Row buildPassword(double size) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Container(
+          margin: EdgeInsets.only(top: 16),
+          width: size * 0.6,
+          child: TextFormField(
+            decoration: InputDecoration(
+              labelText: 'รหัสผ่าน (Password) ?',
+              labelStyle: MyConstant().h3Style(),
+              prefixIcon: Icon(
+                Icons.lock,
+                color: MyConstant.dark,
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: MyConstant.dark),
+                borderRadius: BorderRadius.circular(30),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: MyConstant.light),
+                borderRadius: BorderRadius.circular(30),
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     double size = MediaQuery.of(context).size.width;
@@ -49,16 +173,24 @@ class _CreateAccountState extends State<CreateAccount> {
         title: Text('สร้างบัญชีผู้ใช้'),
         backgroundColor: MyConstant.primry,
       ),
-      body: ListView(
-        padding: EdgeInsets.all(16),
-        children: [
-          buildTitle('ข้อมูลทั่วไป'),
-          buildName(size),
-          buildTitle('ชนิดของ User'),
-          buildRadioBuyer(size),
-          buildRadioSeller(size),
-          buildRadioRider(size),
-        ],
+      body: GestureDetector(
+        onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
+        behavior: HitTestBehavior.opaque,
+        child: ListView(
+          padding: EdgeInsets.all(16),
+          children: [
+            buildTitle('ข้อมูลทั่วไป'),
+            buildName(size),
+            buildAdress(size),
+            buildPhone(size),
+            buildUser(size),
+            buildPassword(size),
+            buildTitle('ชนิดของ User'),
+            buildRadioBuyer(size),
+            buildRadioSeller(size),
+            buildRadioRider(size),
+          ],
+        ),
       ),
     );
   }
