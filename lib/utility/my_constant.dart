@@ -14,6 +14,7 @@ class MyConstant {
   // ดึงรูปมาแสดง
   static String loginapp1 = 'images/loginapp3.png';
   static String error1 = 'images/error1.png';
+  static String avatar = 'images/avatar.png';
 
   // กำหนดสี Color
   static Color primry = Color(0xff1e88e5);
