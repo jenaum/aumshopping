@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 class MyConstant {
   // ชื่อ App
   static String appName = 'ทรัพยากรมนุษย์';
+  static String domain = 'http://192.168.1.2';
 
   // Route หน้าแอพ ทั้งหมด
   static String routeAuthen = '/authen';

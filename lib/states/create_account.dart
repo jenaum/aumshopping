@@ -1,9 +1,11 @@
 import 'dart:io';
+import 'dart:math';
 
 import 'package:aumshopping/utility/my_constant.dart';
 import 'package:aumshopping/utility/my_dialog.dart';
 import 'package:aumshopping/widgets/show_image.dart';
 import 'package:aumshopping/widgets/show_title.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -18,6 +20,13 @@ class _CreateAccountState extends State<CreateAccount> {
   String? typeUser;
   File? file;
   final formKey = GlobalKey<FormState>();
+  TextEditingController nameController = TextEditingController();
+  TextEditingController addressController = TextEditingController();
+  TextEditingController phoneController = TextEditingController();
+  TextEditingController userController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+
+  String avatar = '';
 
   Row buildName(double size) {
     return Row(
@@ -26,6 +35,7 @@ class _CreateAccountState extends State<CreateAccount> {
         Container(
           width: size * 0.6,
           child: TextFormField(
+            controller: nameController,
             validator: (value) {
               if (value!.isEmpty) {
                 return "กรุณากรอก ชื่อและนามสกุล ด้วย ครับ";
@@ -61,6 +71,7 @@ class _CreateAccountState extends State<CreateAccount> {
           margin: EdgeInsets.only(top: 16),
           width: size * 0.6,
           child: TextFormField(
+            controller: addressController,
             validator: (value) {
               if (value!.isEmpty) {
                 return "กรุณากรอก ที่อยู่ ด้วย ครับ";
@@ -100,6 +111,7 @@ class _CreateAccountState extends State<CreateAccount> {
           margin: EdgeInsets.only(top: 16),
           width: size * 0.6,
           child: TextFormField(
+            controller: phoneController,
             keyboardType: TextInputType.phone,
             validator: (value) {
               if (value!.isEmpty) {
@@ -136,6 +148,7 @@ class _CreateAccountState extends State<CreateAccount> {
           margin: EdgeInsets.only(top: 16),
           width: size * 0.6,
           child: TextFormField(
+            controller: userController,
             validator: (value) {
               if (value!.isEmpty) {
                 return "กรุณากรอก ชื่อบัญชีผู้เข้าใช้ (User) ด้วย ครับ";
@@ -171,6 +184,7 @@ class _CreateAccountState extends State<CreateAccount> {
           margin: EdgeInsets.only(top: 16),
           width: size * 0.6,
           child: TextFormField(
+            controller: passwordController,
             validator: (value) {
               if (value!.isEmpty) {
                 return "กรุณากรอก รหัสผ่าน (Password) ด้วย ครับ";
@@ -249,6 +263,7 @@ class _CreateAccountState extends State<CreateAccount> {
                 'กรุณาเลือก Tap ชนิดของ User ที่ต้องการ ครับ');
           } else {
             print('Process Insrt to Database');
+            uploadPictureAndInsertData();
           }
         }
       },
@@ -256,6 +271,80 @@ class _CreateAccountState extends State<CreateAccount> {
     );
   }
 
+// Upload รูปภาพลง Server
+  Future<Null> uploadPictureAndInsertData() async {
+    String name = nameController.text;
+    String address = addressController.text;
+    String phone = phoneController.text;
+    String user = userController.text;
+    String password = passwordController.text;
+    print(
+        '## name = $name, address = $address, phone = $phone, user = $user, password = $password ');
+    String path =
+        "${MyConstant.domain}/aumshopping/getUserWhereUser.php?isAdd=true&user=$user";
+    await Dio().get(path).then((value) async {
+      print('## value ==>> $value');
+      if (value.toString() == 'null') {
+        print('## User OK');
+        if (file == null) {
+          // ไม่มีรูปภาพ
+          processInsertMySql(
+              name: name,
+              address: address,
+              phone: phone,
+              user: user,
+              password: password);
+        } else {
+          // มีรูปภาพ
+          print('## process Upload Avatar');
+          String apiSaveAvatar =
+              '${MyConstant.domain}/aumshopping/saveAvatar.php';
+          int i = Random().nextInt(100000);
+          String nameAvatar = 'avatar$i.jpg';
+          Map<String, dynamic> map = Map();
+          map['file'] =
+              await MultipartFile.fromFile(file!.path, filename: nameAvatar);
+          FormData data = FormData.fromMap(map);
+          await Dio().post(apiSaveAvatar, data: data).then((value) {
+            avatar = '/aumshopping/avatar/$nameAvatar';
+            processInsertMySql(
+                name: name,
+                address: address,
+                phone: phone,
+                user: user,
+                password: password);
+          });
+        }
+      } else {
+        MyDialog().normalDialog(context, 'ไม่สามารถใช้ User นี้ได้ ?',
+            'กรุณาเปลี่ยน User ด้วยครับ');
+      }
+    });
+  }
+
+  Future<Null> processInsertMySql(
+      {String? name,
+      String? address,
+      String? phone,
+      String? user,
+      String? password}) async {
+    print('## processInsertMySql Work and Avatar ==>> $avatar');
+
+    String apiInsertUser =
+        '${MyConstant.domain}/aumshopping/insertUser.php?isAdd=true&name=$name&address=$address&phone=$phone&user=$user&password=$password&type=$typeUser&avatar=$avatar';
+    await Dio().get(apiInsertUser).then((value) {
+      if (value.toString() == 'true') {
+        Navigator.pop(context);
+      } else {
+        MyDialog().normalDialog(
+            context,
+            'ไม่สามารถสร้าง ชื่อบัญชีผู้ใช้นี้ได้ !!',
+            'กรุณาสมัครบัญชีผู้ใช้ใหม่');
+      }
+    });
+  }
+
+// ดึงรูปภาพมาแสดง
   Future<Null> chooseImage(ImageSource source) async {
     try {
       var result = await ImagePicker()
