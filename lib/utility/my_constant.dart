@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class MyConstant {
   // ชื่อ App
   static String appName = 'ทรัพยากรมนุษย์';
-  static String domain = 'http://192.168.1.2';
+  static String domain = 'http://192.168.1.183';
 
   // Route หน้าแอพ ทั้งหมด
   static String routeAuthen = '/authen';
@@ -34,12 +34,21 @@ class MyConstant {
         color: dark,
         fontWeight: FontWeight.w700,
       );
+  TextStyle h2WhiteStyle() => TextStyle(
+        fontSize: 18,
+        color: Colors.white,
+        fontWeight: FontWeight.w700,
+      );
   TextStyle h3Style() => TextStyle(
         fontSize: 14,
         color: dark,
         fontWeight: FontWeight.normal,
       );
-
+  TextStyle h3WhiteStyle() => TextStyle(
+        fontSize: 14,
+        color: Colors.white,
+        fontWeight: FontWeight.normal,
+      );
 // สร้าง Style ปุ่ม
   ButtonStyle myButtonStyle() => ElevatedButton.styleFrom(
         primary: MyConstant.primry,

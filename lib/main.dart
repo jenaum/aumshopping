@@ -4,6 +4,7 @@ import 'package:aumshopping/states/create_account.dart';
 import 'package:aumshopping/states/rider_service.dart';
 import 'package:aumshopping/states/sellerservice.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'utility/my_constant.dart';
 
 final Map<String, WidgetBuilder> map = {
@@ -16,10 +17,33 @@ final Map<String, WidgetBuilder> map = {
 
 String? initlalRoute;
 
-void main() {
+Future<Null> main() async {
   // ดึงหน้าแอพ มาแสดงเป็นหน้าแรก
-  initlalRoute = MyConstant.routeAuthen;
-  runApp(MyApp());
+
+  WidgetsFlutterBinding.ensureInitialized();
+  SharedPreferences preferences = await SharedPreferences.getInstance();
+  String? type = preferences.getString('type');
+  print('## type ===>> $type');
+  if (type?.isEmpty ?? true) {
+    initlalRoute = MyConstant.routeAuthen;
+    runApp(MyApp());
+  } else {
+    switch (type) {
+      case 'buyer':
+        initlalRoute = MyConstant.routeBuyerService;
+        runApp(MyApp());
+        break;
+      case 'seler':
+        initlalRoute = MyConstant.routeSellerService;
+        runApp(MyApp());
+        break;
+      case 'rider':
+        initlalRoute = MyConstant.routeRiderService;
+        runApp(MyApp());
+        break;
+      default:
+    }
+  }
 }
 
 class MyApp extends StatelessWidget {
@@ -28,6 +52,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      // ปิด คาดแดง
+      debugShowCheckedModeBanner: false,
       // ชื่อ แอพ
       title: MyConstant.appName,
       // ดึงหน้าแอพมาแสดง
