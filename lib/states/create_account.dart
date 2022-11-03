@@ -56,6 +56,14 @@ class _CreateAccountState extends State<CreateAccount> {
                 borderSide: BorderSide(color: MyConstant.light),
                 borderRadius: BorderRadius.circular(30),
               ),
+              errorBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: MyConstant.red),
+                borderRadius: BorderRadius.circular(30),
+              ),
+              focusedErrorBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: MyConstant.light),
+                borderRadius: BorderRadius.circular(30),
+              ),
             ),
           ),
         ),
@@ -96,6 +104,14 @@ class _CreateAccountState extends State<CreateAccount> {
                 borderSide: BorderSide(color: MyConstant.light),
                 borderRadius: BorderRadius.circular(30),
               ),
+              errorBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: MyConstant.red),
+                borderRadius: BorderRadius.circular(30),
+              ),
+              focusedErrorBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: MyConstant.light),
+                borderRadius: BorderRadius.circular(30),
+              ),
             ),
           ),
         ),
@@ -130,6 +146,14 @@ class _CreateAccountState extends State<CreateAccount> {
                 borderRadius: BorderRadius.circular(30),
               ),
               focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: MyConstant.light),
+                borderRadius: BorderRadius.circular(30),
+              ),
+              errorBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: MyConstant.red),
+                borderRadius: BorderRadius.circular(30),
+              ),
+              focusedErrorBorder: OutlineInputBorder(
                 borderSide: BorderSide(color: MyConstant.light),
                 borderRadius: BorderRadius.circular(30),
               ),
@@ -169,6 +193,14 @@ class _CreateAccountState extends State<CreateAccount> {
                 borderSide: BorderSide(color: MyConstant.light),
                 borderRadius: BorderRadius.circular(30),
               ),
+              errorBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: MyConstant.red),
+                borderRadius: BorderRadius.circular(30),
+              ),
+              focusedErrorBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: MyConstant.light),
+                borderRadius: BorderRadius.circular(30),
+              ),
             ),
           ),
         ),
@@ -202,6 +234,14 @@ class _CreateAccountState extends State<CreateAccount> {
                 borderRadius: BorderRadius.circular(30),
               ),
               focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: MyConstant.light),
+                borderRadius: BorderRadius.circular(30),
+              ),
+              errorBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: MyConstant.red),
+                borderRadius: BorderRadius.circular(30),
+              ),
+              focusedErrorBorder: OutlineInputBorder(
                 borderSide: BorderSide(color: MyConstant.light),
                 borderRadius: BorderRadius.circular(30),
               ),

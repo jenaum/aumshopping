@@ -1,3 +1,4 @@
+import 'package:aumshopping/states/add_product.dart';
 import 'package:aumshopping/states/authen.dart';
 import 'package:aumshopping/states/buyer_service.dart';
 import 'package:aumshopping/states/create_account.dart';
@@ -13,6 +14,7 @@ final Map<String, WidgetBuilder> map = {
   '/buyerService': (BuildContext context) => BuyerService(),
   '/sellerService': (BuildContext context) => SellerService(),
   '/riderService': (BuildContext context) => RiderService(),
+  '/addProduct': (BuildContext context) => AddProduct(),
 };
 
 String? initlalRoute;
@@ -51,6 +53,8 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    MaterialColor materialColor =
+        MaterialColor(0xff005cb2, MyConstant.mapMaterialColor);
     return MaterialApp(
       // ปิด คาดแดง
       debugShowCheckedModeBanner: false,
@@ -59,6 +63,8 @@ class MyApp extends StatelessWidget {
       // ดึงหน้าแอพมาแสดง
       routes: map,
       initialRoute: initlalRoute,
+      // กำหนดสีทั้ง แอพ
+      theme: ThemeData(primarySwatch: materialColor),
     );
   }
 }
