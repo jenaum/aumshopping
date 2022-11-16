@@ -1,10 +1,14 @@
 import 'dart:io';
+import 'dart:math';
 
+import 'package:aumshopping/utility/my_dialog.dart';
 import 'package:aumshopping/widgets/show_image.dart';
 import 'package:aumshopping/widgets/show_title.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../utility/my_constant.dart';
 
@@ -20,6 +24,9 @@ class _AddProductState extends State<AddProduct> {
   // สร้างตัวแปรไว้ แสดงภาพ
   List<File?> files = [];
   File? file;
+  TextEditingController nameComtroller = TextEditingController();
+  TextEditingController priceComtroller = TextEditingController();
+  TextEditingController detailComtroller = TextEditingController();
 
   @override
   void initState() {
@@ -38,6 +45,11 @@ class _AddProductState extends State<AddProduct> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        actions: [
+          IconButton(
+              onPressed: () => processAddProduct(),
+              icon: Icon(Icons.cloud_upload))
+        ],
         title: Text('เพิ่มสินค้า'),
       ),
       body: LayoutBuilder(
@@ -71,11 +83,59 @@ class _AddProductState extends State<AddProduct> {
       child: ElevatedButton(
         style: MyConstant().myButtonStyle(),
         onPressed: () {
-          if (formKey.currentState!.validate()) {}
+          processAddProduct();
         },
         child: Text('เพิ่มสินค้า'),
       ),
     );
+  }
+
+  Future<Null> processAddProduct() async {
+    if (formKey.currentState!.validate()) {
+      bool chedkFile = true;
+      for (var item in files) {
+        if (item == null) {
+          chedkFile = false;
+        }
+      }
+      if (chedkFile) {
+        // print('## chooes 4 image success');
+        MyDialog().showProgressDialog(context);
+
+        String apiSaveProduct =
+            '${MyConstant.domain}/aumshopping/saveProduct.php';
+        // print('### apiSaveProduct == $apiSaveProduct');
+
+        int loop = 0;
+        for (var item in files) {
+          int i = Random().nextInt(100000000);
+          String nameFile = 'product$i.jpg';
+          Map<String, dynamic> map = {};
+          map['file'] =
+              await MultipartFile.fromFile(item!.path, filename: nameFile);
+          FormData data = FormData.fromMap(map);
+          await Dio().post(apiSaveProduct, data: data).then((value) async {
+            print("Upload Succes");
+            loop++;
+            if (loop >= files.length) {
+              SharedPreferences preference =
+                  await SharedPreferences.getInstance();
+              String idSeller = preference.getString('id')!;
+              String nameSeller = preference.getString('name')!;
+              String name = nameComtroller.text;
+              String price = priceComtroller.text;
+              String detail = detailComtroller.text;
+              print('## id Seller = $idSeller, name Seller = $nameSeller');
+              print('## name = $name, price = $price, detail = $detail ');
+              Navigator.pop(context);
+            }
+          });
+        }
+      } else {
+        MyDialog().normalDialog(
+            context, 'ภาพยังไม่ครบ ?', 'กรุณาเลือกรูปให้ครบ 4 รูป');
+      }
+    }
   }
 
 //ดึงรูปมาแสดง
@@ -212,6 +272,7 @@ class _AddProductState extends State<AddProduct> {
       width: constraints.maxWidth * 0.6,
       margin: EdgeInsets.only(top: 16),
       child: TextFormField(
+        controller: nameComtroller,
         validator: (value) {
           if (value!.isEmpty) {
             return 'กรุณากรอกชื่อสินค้าค้วย ครับ';
@@ -252,6 +313,7 @@ class _AddProductState extends State<AddProduct> {
       width: constraints.maxWidth * 0.6,
       margin: EdgeInsets.only(top: 16),
       child: TextFormField(
+        controller: priceComtroller,
         validator: (value) {
           if (value!.isEmpty) {
             return 'กรุณากรอกราคาสินค้าค้วย ครับ';
@@ -293,6 +355,7 @@ class _AddProductState extends State<AddProduct> {
       width: constraints.maxWidth * 0.6,
       margin: EdgeInsets.only(top: 16),
       child: TextFormField(
+        controller: detailComtroller,
         validator: (value) {
           if (value!.isEmpty) {
             return 'กรุณากรอกรายละเอียดสินค้าค้วย ครับ';
