@@ -27,6 +27,8 @@ class _AddProductState extends State<AddProduct> {
   TextEditingController nameComtroller = TextEditingController();
   TextEditingController priceComtroller = TextEditingController();
   TextEditingController detailComtroller = TextEditingController();
+  // สร้างตัวแปร รับรูปภาพ 4 รูป
+  List<String> paths = [];
 
   @override
   void initState() {
@@ -110,6 +112,9 @@ class _AddProductState extends State<AddProduct> {
         for (var item in files) {
           int i = Random().nextInt(100000000);
           String nameFile = 'product$i.jpg';
+
+          paths.add('/product/$nameFile');
+
           Map<String, dynamic> map = {};
           map['file'] =
               await MultipartFile.fromFile(item!.path, filename: nameFile);
@@ -125,8 +130,16 @@ class _AddProductState extends State<AddProduct> {
               String name = nameComtroller.text;
               String price = priceComtroller.text;
               String detail = detailComtroller.text;
+              String images = paths.toString();
               print('## id Seller = $idSeller, name Seller = $nameSeller');
               print('## name = $name, price = $price, detail = $detail ');
+              print('### Images = $images');
+
+              String path =
+                  '${MyConstant.domain}/aumshopping/insertProduct.php?isAdd=true&idSeller=$idSeller&nameSeller=$nameSeller&name=$name&price=$price&detail=$detail&images=$images';
+
+              await Dio().get(path).then((value) => Navigator.pop(context));
+
               Navigator.pop(context);
             }
           });
