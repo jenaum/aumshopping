@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class MyConstant {
   // ชื่อ App
-  static String appName = 'ทรัพยากรมนุษย์';
+  static String appName = 'ซื้อสินค้า Delivery';
   static String domain = 'http://192.168.1.2';
 
   // Route หน้าแอพ ทั้งหมด
@@ -18,6 +18,8 @@ class MyConstant {
   static String error1 = 'images/error1.png';
   static String avatar = 'images/avatar.png';
   static String images = 'images/images.png';
+  static String noimage = 'images/noimage.png';
+
   // กำหนดสี Color
   static Color primry = Color(0xff1e88e5);
   static Color dark = Color(0xff005cb2);
@@ -63,6 +65,12 @@ class MyConstant {
         color: Colors.white,
         fontWeight: FontWeight.normal,
       );
+  TextStyle h3RedStyle() => TextStyle(
+        fontSize: 14,
+        color: Colors.red,
+        fontWeight: FontWeight.normal,
+      );
+
 // สร้าง Style ปุ่ม
   ButtonStyle myButtonStyle() => ElevatedButton.styleFrom(
         primary: MyConstant.primry,
