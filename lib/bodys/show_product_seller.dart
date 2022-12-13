@@ -1,6 +1,4 @@
 import 'dart:convert';
-import 'dart:html';
-
 import 'package:aumshopping/models/product_model.dart';
 import 'package:aumshopping/utility/my_constant.dart';
 import 'package:aumshopping/widgets/show_image.dart';
@@ -9,7 +7,6 @@ import 'package:aumshopping/widgets/show_title.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ShowProduct extends StatefulWidget {
@@ -35,9 +32,9 @@ class _ShowProductState extends State<ShowProduct> {
 
 // ดึงข้อมูล API สินค้า
   Future<Null> loadValueFromAPI() async {
-    // if (productModels.length != 0) {
-    //   productModels.clear();
-    // } else {}
+    if (productModels.length != 0) {
+      productModels.clear();
+    } else {}
 
     SharedPreferences preferences = await SharedPreferences.getInstance();
     String id = preferences.getString('id')!;
@@ -92,7 +89,8 @@ class _ShowProductState extends State<ShowProduct> {
                 ),
       floatingActionButton: FloatingActionButton(
         onPressed: () =>
-            Navigator.pushNamed(context, MyConstant.routeAddProduct),
+            Navigator.pushNamed(context, MyConstant.routeAddProduct)
+                .then((value) => loadValueFromAPI()),
         child: Text('เพิ่ม'),
       ),
     );
