@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class MyConstant {
   // ชื่อ App
   static String appName = 'ซื้อสินค้า Delivery';
-  static String domain = 'http://192.168.1.2';
+  static String domain = 'http://192.168.67.32';
 
   // Route หน้าแอพ ทั้งหมด
   static String routeAuthen = '/authen';

@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:aumshopping/models/product_model.dart';
+import 'package:aumshopping/states/edit_product.dart';
 import 'package:aumshopping/utility/my_constant.dart';
 import 'package:aumshopping/widgets/show_image.dart';
 import 'package:aumshopping/widgets/show_progress.dart';
@@ -160,7 +161,17 @@ class _ShowProductState extends State<ShowProduct> {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       IconButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          print('## You Click Edit');
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => EditProduct(
+                                productModel: productModels[index],
+                              ),
+                            ),
+                          );
+                        },
                         icon: Icon(
                           Icons.edit_outlined,
                           size: 36,
